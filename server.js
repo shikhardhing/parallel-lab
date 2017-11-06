@@ -9,8 +9,6 @@ var storage = multer.diskStorage(
     {
         destination: 'the_folder/',
         filename: function ( req, file, cb ) {
-            //req.body is empty...
-            //How could I get the new_file_name property sent from client here?
             console.log(file.originalname);
             cb( null, file.originalname);
         }
@@ -18,7 +16,6 @@ var storage = multer.diskStorage(
 );
 
 var upload = multer( { storage: storage } );
-// var upload = multer({ dest: 'the_folder/' });
 const dirTree = require('directory-tree');
 
 var app = express();
@@ -29,7 +26,7 @@ var sess = {
   resave: true,
   saveUninitialized: true
 }
- 
+
 app.set('trust proxy', 1) // trust first proxy
 sess.cookie.secure = true // serve secure cookies
 
@@ -59,14 +56,14 @@ app.get('/data',function (req, res, next) {
 });
 
 //Download a file from the server
-app.get('/download/:file', function(req, res){
-  console.log(req.params);  
-  var file = __dirname + '/the_folder/' + req.params.file;
+app.get('/download/*', function(req, res){
+  console.log(req.params['0']);
+  var file = __dirname + '/the_folder/' + req.params['0'];
   console.log(file);
   res.download(file); // Set disposition and send it.
 });
 
-//Modify the file on the server 
+//Modify the file on the server
 app.post('/upload', upload.single('avatar'), function (req, res, next) {
     res.redirect('/');
 })

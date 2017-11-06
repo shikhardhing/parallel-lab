@@ -35,7 +35,7 @@
 	    <div class="view">
         <form action="/upload" method="post" enctype="multipart/form-data">
             <input type="file" id="avatar" style="display:none;" />
-            <input type="submit" id="upload" value="Upload new file"></input>
+            <input type="submit" id="upload" value="Upload selected file to server"></input>
         </form>
 	     </div>
 
@@ -46,8 +46,10 @@
 	<script>
 function json_tree(object) {
     var json = "";
+    var prefix = "";
     for (prop in object) {
         var value = object[prop];
+        console.log(value);
         switch (typeof(value.children)) {
             case "object":
 							console.log(value.name);
@@ -57,7 +59,7 @@ function json_tree(object) {
             default:
 								console.log(value.name);
                 var avatar = document.getElementById('avatar');
-                json += "<div class='file'> <div class='text col-4'> " + value.name.substring(0,30) + "</div> <a class='col-4' href='/download/" + value.name + "' id='download'> Download </a> <input class='col-4' type='button' id='modify' onclick='avatar.click()' value='Modify' /> </div>  ";
+                json += "<div class='file'> <div class='text col-4'> " + value.name.substring(0,30) + "</div> <a class='col-4' href='/download/" + value.path.substring(11) + "' id='download'> Download </a> <input class='col-4' type='button' id='modify' onclick='avatar.click()' value='Modify' /> </div>  ";
         }
     }
     return json ;
@@ -69,6 +71,6 @@ $.get('/data', function(tree){
 
 </script>
 <br><br>
-<p><a href="https://github.com/7ranveer"><center>Ranvirsinh Gohil</center></a><br><a href="https://github.com/shikhardhing"><center>Shikhar Dhing</center></a><br><a href="https://github.com/7ranveer"><center>Mayank Sharma</center></a><br><a href="https://github.com/7ranveer"><center>Monika Maheshwari</center></a></p>
+<p><a href="https://github.com/7ranveer"><center>Ranvirsinh Gohil</center></a><br><a href="https://github.com/7ranveer"><center>Shikhar Dhing</center></a><br><a href="https://github.com/7ranveer"><center>Mayank Sharma</center></a><br><a href="https://github.com/7ranveer"><center>Monika Maheshwari</center></a></p>
 </body>
 </html>
