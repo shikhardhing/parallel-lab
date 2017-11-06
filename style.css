@@ -1,91 +1,240 @@
 @import url(https://fonts.googleapis.com/css?family=Roboto:400,100,900);
 
-html,
-body {
-  -moz-box-sizing: border-box;
-       box-sizing: border-box;
-  height: 100%;
-  width: 100%;
-  background: #FFD6BF;
+html, body {
+  padding: 0px;
+  margin: 2%;
+  background: #222;
   font-family: 'Roboto', sans-serif;
   font-weight: 400;
+  color: #fff;
+}
+
+p {
+  text-align: center;
 }
 
 .container {
-  margin-top: 40px;
-  border: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  height: 100%;
+  margin: auto;
+  position: relative;
+  overflow: hidden;
+}
+
+.container * {
+  box-sizing: border-box;
+}
+
+#open {
+  visibility: hidden;
+}
+#open:checked ~ .sidebar {
+  transform: translateX(-200px);
+}
+#open:checked + .sidebar .close .icon {
+  transform: rotateZ(0deg);
+}
+
+.sidebar {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  top: 0px;
+  left: 0px;
+  z-index: 10;
+  transition: all 0.25s;
+}
+
+.sidebar .view {
+  position: relative;
+  height: 100%;
+  background: #222;
+  box-shadow: 2px 40px 4px rgba(0, 0, 0, 0.25);
+  z-index: 10;
+  overflow-y: auto;
+  padding-left: 20px;
+  padding-top: 10px;
+}
+
+.sidebar .view .folder {
+  border: 1px solid transparent;
+  overflow: hidden;
+  max-height: 1000px;
+}
+
+.sidebar .view .folder .file, .sidebar .view .folder .folder {
+  padding-left: 20px;
+  animation: push 0.25s;
+}
+
+.sidebar .view .label, .sidebar .view .file {
+  height: 40px;
+  max-height: 40px;
+  line-height: 40px;
+  font-size: 1.5em;
+  margin-bottom: 20px;
+  padding-left: 5px;
+  border: 1px solid transparent;
   border-color: #fff;
+  overflow: hidden;
+  display: block;
 }
 
-.wrapper {
- display: table;
- height: 100%;
- width: 100%;
+.sidebar .view .label:hover, .sidebar .view .file:hover {
+  cursor: pointer;
 }
 
-.container-fostrap {
- display: table-cell;
- padding: 1em;
- text-align: center;
- vertical-align: middle;
+.sidebar .view .label i, .sidebar .view .file i {
+  line-height: 12px;
+  height: 20px;
+  padding: 0px;
+  margin: 0px;
+  vertical-align: middle;
 }
 
-h1.heading {
- color: #fff;
- font-size: 1.15em;
- font-weight: 900;
- margin: 0 0 0.5em;
- color: #505050;
-}
-@media (min-width: 450px) {
- h1.heading {
-   font-size: 3.55em;
- }
-}
-@media (min-width: 760px) {
- h1.heading {
-   font-size: 3.05em;
- }
-}
-@media (min-width: 900px) {
- h1.heading {
-   font-size: 3.25em;
-   margin: 0 0 0.3em;
- }
-}
-.card {
-   display: block;
-   margin-bottom: 20px;
-   line-height: 1.42857143;
-   background-color: #fff;
-   border-radius: 2px;
-   box-shadow: 0 2px 5px 0 rgba(0,0,0,0.16),0 2px 10px 0 rgba(0,0,0,0.12);
-   transition: box-shadow .25s;
-}
-.card:hover {
- box-shadow: 0 8px 17px 0 rgba(0,0,0,0.2),0 6px 20px 0 rgba(0,0,0,0.19);
+.sidebar .view .label i.hide, .sidebar .view .file i.hide {
+  display: none;
 }
 
-.card-content {
- padding:15px;
- text-align:left;
+.sidebar .view .label .text, .sidebar .view .file .text {
+  display: inline-block;
 }
-.card-title {
- margin-top:0px;
- font-weight: 700;
- font-size: 1.65em;
+
+.sidebar .view .folder .label {
+  font-size: 1.7em;
+  padding-bottom: 20px;
 }
-.card-title a {
- color: #000;
- text-decoration: none !important;
+
+.sidebar .view .folder input[type="checkbox"] {
+  display: none;
 }
-.card-read-more {
- border-top: 1px solid #D4D4D4;
+
+.sidebar .view input:checked ~ .file, .sidebar .view input:checked ~ .folder {
+  animation: pull 0.25s, hide 1s infinite;
+  animation-delay: 0s, 0.25s;
 }
-.card-read-more a {
- text-decoration: none !important;
- padding:10px;
- font-weight:600;
- text-transform: uppercase;
+
+.sidebar .view input:checked ~ .label i.hide {
+  display: inline-block;
+}
+
+.sidebar .view input:checked ~ .label i.show {
+  display: none;
+}
+
+.sidebar .close {
+  position: absolute;
+  top: 0px;
+  left: 200px;
+  width: 40px;
+  height: 40px;
+  line-height: 40px;
+  background: #c15;
+  text-align: center;
+  box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.25);
+  z-index: 1;
+}
+
+.col-4 {
+  width: 25%;
+}
+
+a {
+  color: #ff0000;
+  float: right;
+  margin-right: 1%;
+}
+
+#download {
+  margin-right: 1%;
+}
+
+#modify {
+    float: right;
+    background-color: #222;
+    border: none;
+    color: red;
+    margin-top: 0.2em;
+    text-decoration: underline;
+    font-size: 1em;
+    cursor: pointer;
+}
+
+#upload {
+    background-color: blue;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+}
+
+
+
+@keyframes pull {
+  from {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+  to {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+}
+
+@keyframes push {
+  from {
+    opacity: 0;
+    transform: translateX(-20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0px);
+  }
+}
+
+@keyframes hide {
+  from, to {
+    max-height: 0px;
+    opacity: 0;
+  }
+}
+
+@media only screen and (max-width: 520px) {
+
+   body {
+      font-size: 0.7em;
+   }
+
+   .sidebar .view .label, .sidebar .view .file {
+     height: 80px;
+     max-height: 80px;
+     line-height: 40px;
+     font-size: 1.5em;
+     margin-bottom: 20px;
+     padding-left: 5px;
+     border: 1px solid transparent;
+     border-color: #fff;
+     overflow: hidden;
+     display: block;
+   }
+
+   .sidebar .view .file .text {
+     display: block;
+   }
+
+   #modify {
+     float: none;
+     margin-top: 0.5em;
+   }
+
+   #download {
+     float: none;
+   }
 
 }
+
