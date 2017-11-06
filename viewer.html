@@ -1,25 +1,18 @@
 <html>
 <head>
 <title>App</title>
+<meta charset="utf-8">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 
-<!-- Latest compiled and minified CSS -->
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css" integrity="sha384-BVYiiSIFeK1dGmJRAkycuHAHRg32OmUcww7on3RYdg4Va+PmSTsz/K68vbdEjh4u" crossorigin="anonymous">
 <link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
 <link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/themes/smoothness/jquery-ui.css">
-<!-- Latest compiled and minified JavaScript -->
-<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
+
 <script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
 <script src="/socket.io/socket.io.js"></script>
-<script>
-$.get('/data', function(tree){
-	var myinfo = tree;
-	console.log(myinfo);
-	for (var i=0; i<myinfo.children.length ; i++){
-		$( ".row" ).append( "<div class='col-xs-12 col-sm-4'> <div class='card'> <div class='card-content'> <h4 class='card-title'>" + myinfo.children[i].name + "</h4> <p class=''> </p> <div> <div class='card-read-more'> <a href='/download/" + myinfo.children[i].name + "' class='btn btn-link btn-primary'> Download </a> <a href='#' class='btn btn-link btn-primary'> Modify </a> </div> </div> </div>" );
-	}
-	});
-</script>
+
 <script>
   $(function () {
     var socket = io();
@@ -32,27 +25,50 @@ $.get('/data', function(tree){
 </script>
 </head>
 <body>
-<section class="wrapper">
-    <div class="container-fostrap">
-        <div>
-            <h1 class="heading">
-                Files and Folders
-            </h1>
-        </div>
-        <div class="content">
-            <div class="container">
-                <div class="row">
 
-                </div>
-            </div>
-        </div>
-        <!-- <form action="/upload" method="post" enctype="multipart/form-data">
-		    <input type="file" name="avatar"></input>
-		    <input type="submit" value="Upload selected file to server"></input>
-		</form> -->
-    </div>
-</section>
+<div class="container">
+	  <input type="checkbox" id="open"/>
+	  <div class="sidebar">
+	    <label class="close" for="open">
+	      <div class="icon">+</div>
+	    </label>
+	    <div class="view">
+        <form action="/upload" method="post" enctype="multipart/form-data">
+            <input type="file" id="avatar" style="display:none;" />
+            <input type="submit" id="upload" value="Upload selected file to server"></input>
+        </form>
+	     </div>
 
+	  <div class="content"></div>
+  </div>
+
+</div>
+	<script>
+function json_tree(object) {
+    var json = "";
+    for (prop in object) {
+        var value = object[prop];
+        switch (typeof(value.children)) {
+            case "object":
+							console.log(value.name);
+								json += "<div class='folder'> <input type='checkbox' id='" + value.name.substring(0,30) + "'/> <label class='label' for='" + value.name + "' > <i class='material-icons hide'>folder</i><i class='material-icons show'>folder_open</i> <div class='text'>"
+								+ value.name + "</div> </label>" + json_tree(value.children) + "</div>";
+                break;
+            default:
+								console.log(value.name);
+                var avatar = document.getElementById('avatar');
+                json += "<div class='file'> <div class='text col-4'> " + value.name.substring(0,30) + "</div> <a class='col-4' href='/download/" + value.name + "' id='download'> Download </a> <input class='col-4' type='button' id='modify' onclick='avatar.click()' value='Modify' /> </div>  ";
+        }
+    }
+    return json ;
+}
+
+$.get('/data', function(tree){
+	$(".view").append(json_tree(tree.children));
+});
+
+</script>
 
 </body>
 </html>
+
